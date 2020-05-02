@@ -1,4 +1,5 @@
-﻿using System;
+﻿using System.Net;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -6,9 +7,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using TodoApi.Models;
+using  Microsoft.AspNetCore.Authorization;
 
 namespace TodoApi.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("[controller]")]
     public class WeatherForecastController : ControllerBase
@@ -29,6 +32,7 @@ namespace TodoApi.Controllers
             var toDoItems = await _context.TodoItems.ToListAsync();
             return Ok(toDoItems);
         }
+        [AllowAnonymous]
         [HttpGet("{id}")]
         public async  Task<IActionResult> Get(long id)
         {
