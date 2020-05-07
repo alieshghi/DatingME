@@ -1,0 +1,32 @@
+<nav class="navbar navbar-expand-md navbar-dark   bg-dark">
+    <a class="navbar-brand" href="#">Matches</a>
+    
+  
+    
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item active">
+          <a class="nav-link" href="#">لیست کاربران  </a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="#">پیام ها</a>
+        </li>
+       
+        
+      </ul>
+      <div class="dropdown show">
+        <a *ngIf="logedIn()" class="dropdown-toggle text-light">
+          خوش آمدید
+        </a>
+      
+        <div class="dropdown-menu" >
+          <a class="dropdown-item" href="#">ویرایش پروفایل</a>
+          <a class="dropdown-item" href="#">خروج</a>          
+        </div>
+      </div>
+      <form *ngIf="!logedIn()" #loginForm="ngForm" class="form-inline my-2 my-lg-0" (ngSubmit)=login()>
+        <input class="form-control mr-sm-2"  required name="userName" [(ngModel)]="model.userName" dir="rtl" type="text" placeholder="نام کاربری" >
+        <input class="form-control mr-sm-2 " required name="password" [(ngModel)]="model.password" dir="rtl" type="password" placeholder="کلمه عبور" >
+        <button class="btn btn-success my-2 my-sm-0" [disabled]="!loginForm.valid" type="submit">ورود</button>
+      </form>
+    
+  </nav>

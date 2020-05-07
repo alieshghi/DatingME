@@ -27,6 +27,7 @@ namespace TodoApi.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public async Task<IActionResult> Get()
         {
             var toDoItems = await _context.TodoItems.ToListAsync();

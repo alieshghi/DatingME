@@ -1,0 +1,21 @@
+<div class="container mt-5" > 
+    <div style="text-align: center; " dir="rtl">
+    <h1>
+        بیا تو رفیق
+    </h1>
+        <p>
+            تنها کاری که باید بکنی ثبت نام هست.
+        </p>
+        <div *ngIf="!registerMode" class="container">
+        <button class="btn btn-primary btn-lg ml-2" (click)="registerToggle()" > ثبت نام</button>
+        <button class="btn btn-info btn-lg"> توضیحات بیشتر</button>
+        </div>
+    </div>
+    <div *ngIf="registerMode" class="container">
+        <div class="row justify-content-center">
+            <div class="col-4">
+                <app-register (cancelRegistration)="registerOut($event)"></app-register>
+            </div>
+        </div>
+    </div>
+</div>
