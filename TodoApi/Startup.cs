@@ -1,3 +1,4 @@
+using System.Net;
 using System.Text;
 using System.Data.Common;
 using System;
@@ -11,12 +12,14 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.EntityFrameworkCore;
 using TodoApi.Models;
 using TodoApi.Data;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.AspNetCore.Diagnostics;
+using Microsoft.AspNetCore.Http;
+using TodoApi.helper;
 namespace TodoApi
 {
     public class Startup
@@ -55,6 +58,19 @@ namespace TodoApi
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+            }
+            else{
+                app.UseExceptionHandler(builder => {
+                    builder.Run(async contex => {
+                        contex.Response.StatusCode= (int) HttpStatusCode.InternalServerError;
+                        var error= contex.Features.Get<IExceptionHandlerFeature>();
+                        if (error!=null)
+                        {
+                            contex.Response.AddApplicationError(error.Error.Message);
+                            await contex.Response.WriteAsync(error.Error.Message);
+                        }
+                    });
+                });
             }
             app.UseCors(x => x.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
             app.UseHttpsRedirection();

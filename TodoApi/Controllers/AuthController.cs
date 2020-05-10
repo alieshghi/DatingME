@@ -31,9 +31,13 @@ namespace TodoApi.Controllers
         [HttpPost("register")]
         public async Task<IActionResult> Register(UserForRegisterDto userDto){
             userDto.UserName= userDto.UserName.ToLower();
+            if (userDto.Password.Length<4)
+            {
+                return BadRequest("تعداد کاراکترهای پسورد باید بزرگتر از 4 باشد");
+            }
             if ( await _repo.UserExists(userDto.UserName))
             {
-                return BadRequest("user name had already Taken");
+                return BadRequest("این حساب کاربری قبلاً ثبت شده است");
             }
             var newUser = new User{
                 UserName=userDto.UserName
@@ -46,7 +50,7 @@ namespace TodoApi.Controllers
             var user = await _repo.Login(userDto.UserName.ToLower(),userDto.Password);
              if (user==null)
              {
-                 return Unauthorized();
+                  return Unauthorized("کاربری یا کلمه عبور صحیح نیست");
              }
              var claims =new []{
                  new Claim(ClaimTypes.NameIdentifier,user.Id.ToString()),

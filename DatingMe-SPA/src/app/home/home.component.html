@@ -1,14 +1,16 @@
-<div class="container mt-5" > 
+<div class="container mt-5" *ngIf="!logedInMode">
     <div style="text-align: center; " dir="rtl">
-    <h1>
-        بیا تو رفیق
-    </h1>
+        
+
+        <h1>
+            بیا تو رفیق
+        </h1>
         <p>
-            تنها کاری که باید بکنی ثبت نام هست.
+            تنها کاری که باید بکنی ثبت نامه
         </p>
         <div *ngIf="!registerMode" class="container">
-        <button class="btn btn-primary btn-lg ml-2" (click)="registerToggle()" > ثبت نام</button>
-        <button class="btn btn-info btn-lg"> توضیحات بیشتر</button>
+            <button class="btn btn-primary btn-lg ml-2" (click)="registerToggle()"> ثبت نام</button>
+            <button class="btn btn-info btn-lg"> توضیحات بیشتر</button>
         </div>
     </div>
     <div *ngIf="registerMode" class="container">

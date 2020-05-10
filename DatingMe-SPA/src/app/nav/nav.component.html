@@ -1,26 +1,30 @@
-<nav class="navbar navbar-expand-md navbar-dark   bg-dark">
-    <a class="navbar-brand" href="#">Matches</a>
+<nav class="navbar navbar-expand-md navbar-dark   bg-danger">
+  <div class="container">
+    <a class="navbar-brand" [routerLink]="['/home']">دل</a>
     
   
     
-      <ul class="navbar-nav mr-auto">
-        <li class="nav-item active">
-          <a class="nav-link" href="#">لیست کاربران  </a>
+      <ul *ngIf="logedIn()" class="navbar-nav mr-auto">
+        <li class="nav-item " routerLinkActive="active">
+          <a class="nav-link" [routerLink]="['/members']"  >انتخاب ها  </a>
         </li>
-        <li class="nav-item active">
-          <a class="nav-link" href="#">پیام ها</a>
+        <li class="nav-item " routerLinkActive="active">
+          <a class="nav-link" [routerLink]="['/lists']" >لیست کاربران  </a>
+        </li>
+        <li class="nav-item" routerLinkActive="active">
+          <a class="nav-link" [routerLink]="['/messages']"  >پیام ها</a>
         </li>
        
         
       </ul>
-      <div class="dropdown show">
-        <a *ngIf="logedIn()" class="dropdown-toggle text-light">
-          خوش آمدید
+      <div dropdown *ngIf="logedIn()" class="dropdown show" >
+        <a  class="dropdown-toggle text-light" dropdownToggle>
+         خوش اومدی {{authServic.decodedToken?.unique_name}}
         </a>
       
-        <div class="dropdown-menu" >
-          <a class="dropdown-item" href="#">ویرایش پروفایل</a>
-          <a class="dropdown-item" href="#">خروج</a>          
+        <div class="dropdown-menu" *dropdownMenu >
+          <a class="dropdown-item" href="#"><i class="fa fa-user"></i>ویرایش پروفایل</a>
+          <a class="dropdown-item" (click)="logedOut()"><i class="fa fa-sign-out"></i>خروج</a>          
         </div>
       </div>
       <form *ngIf="!logedIn()" #loginForm="ngForm" class="form-inline my-2 my-lg-0" (ngSubmit)=login()>
@@ -28,5 +32,7 @@
         <input class="form-control mr-sm-2 " required name="password" [(ngModel)]="model.password" dir="rtl" type="password" placeholder="کلمه عبور" >
         <button class="btn btn-success my-2 my-sm-0" [disabled]="!loginForm.valid" type="submit">ورود</button>
       </form>
+    
+  </div>
     
   </nav>
