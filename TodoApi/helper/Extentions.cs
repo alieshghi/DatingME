@@ -1,5 +1,6 @@
 using System.Net.Mime;
 using Microsoft.AspNetCore.Http;
+using System;
 namespace TodoApi.helper
 {
     public static class Extentions
@@ -9,6 +10,14 @@ namespace TodoApi.helper
             response.Headers.Add("Access-Control-Expose-Headers","Application-Error");
             response.Headers.Add("Access-Control-Allow-Origin","*");
 
+        }
+        public static int CalCauteAge(this DateTime birthDay){
+            var age = DateTime.Today.Year - birthDay.Year;
+            if (birthDay.AddYears(age)> DateTime.Today)
+            {
+                age--;                                
+            }
+            return age;
         }
     }
 }

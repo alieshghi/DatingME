@@ -12,6 +12,7 @@ using Microsoft.IdentityModel.Logging;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
+using AutoMapper;
 
 namespace TodoApi.Controllers
 {
@@ -22,11 +23,17 @@ namespace TodoApi.Controllers
         private readonly ILogger<AuthController> _logger;
         private readonly IAuthRepository _repo;
         private readonly IConfiguration _config;
-        public AuthController(ILogger<AuthController> logger, IAuthRepository repo,IConfiguration config)
+        private readonly IMapper _mapper;
+        public AuthController(ILogger<AuthController> logger,
+         IAuthRepository repo,
+         IConfiguration config,
+         IMapper mapper
+         )
         {
             _repo = repo;
             _logger=logger;
             _config=config;
+            _mapper=mapper;
         }
         [HttpPost("register")]
         public async Task<IActionResult> Register(UserForRegisterDto userDto){

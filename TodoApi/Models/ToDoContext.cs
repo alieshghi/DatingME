@@ -10,5 +10,6 @@ namespace TodoApi.Models
 
         public DbSet<ToDoItems> TodoItems { get; set; }
         public DbSet<User> Users {get;set;}
+        public DbSet<Photo> photos {get;set;}
     }
 }
