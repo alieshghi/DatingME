@@ -50,5 +50,19 @@ namespace TodoApi.Controllers
             var userToReturn= _mapper.Map<UserForDetails>(user);
              return Ok(userToReturn);
         }
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateUser(int id,UserForUpdateDto userForUpdateDto){
+            if (id!= int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
+            {
+                return Unauthorized("هر کاربر فقط اطلاعات مربوط به خود را باید ویرایش کند");
+            }
+            var userFromServer = await _repo.GetUser(id);
+            _mapper.Map(userForUpdateDto,userFromServer);
+            if (await _repo.SaveAll())
+            {
+                return NoContent();
+            }
+            throw new Exception ($"در ذخیره سازی تغییرات کاربری {id} به مشکل خوردیم");
+        }
     }
 }

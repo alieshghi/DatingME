@@ -24,6 +24,8 @@ namespace TodoApi.helper
             src.DateOfBirth.CalCauteAge()
             ));
             CreateMap<Photo,PhotoForDetails>();
+            CreateMap<UserForUpdateDto,User>();
+            
         }
     }
 }

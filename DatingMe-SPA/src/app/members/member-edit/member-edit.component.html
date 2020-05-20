@@ -1,0 +1,75 @@
+<div class="container mt-4">
+    <div dir="rtl" class="row">
+        <div class="col-sm-3">
+            <h1>ویرایش پروفایل</h1>
+        </div>
+        <div  *ngIf="memberEditForm.dirty" class="col-sm-9">
+            <strong class="alert alert-info">
+            در صورت ذخیره نکردن تغییرات شما از دست میرود!
+            </strong>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-4" >
+            <div class="card">
+                <img class="card-img-top img-thumbnail" src="{{user.photoUrl}}" alt="{{user.knownAs}}">
+                <div class="card-body">
+                    <div>
+                        <strong dir="rtl">محل زندکی:</strong>
+                        <p>{{user.city}} , {{user.country}}</p>
+                    </div>
+                    <div>
+                        <strong dir ="rtl">سن:</strong>
+                        <p>{{user.age}}</p>
+                    </div>
+                    <div>
+                        <strong dir="rtl">آخرین بازدید:</strong>
+                        <p>{{user.lastActive}}</p>
+                    </div>
+                    <div>
+                        <strong dir="rtl"> تاریخ عضویت:</strong>
+                        <p>{{user.created}}</p>
+                    </div>
+                </div>
+                <div class="card-footer">                                            
+                        <button [disabled]="!memberEditForm.dirty" form="memberEditForm" class="btn btn-success form-control">ثبت</button>                    
+                </div>
+            </div>
+        </div>
+        <div  class="col-sm-8">
+            <div class="tab-panel">
+                <tabset dir="auto" class="member-tabset" #memberTabs>
+                    
+                        <tab dir="auto" heading="درباره خودت بنویس">
+                            <form #memberEditForm="ngForm" id="memberEditForm" (ngSubmit)="save()" >
+                                <h5>توضیحات من</h5>
+                                <textarea dir=auto  name="introduction"  rows="6" class="form-control" [(ngModel)]="user.introduction">
+
+                                </textarea>
+                                <h5 dir=auto>دنبال کسیم که :</h5>
+                                <textarea dir=auto
+                                 name="lookingFor" rows="6" class="form-control" [(ngModel)]="user.lookingFor">
+                                </textarea>
+                                <h5>علاقه مندی ها :</h5>
+                                <textarea dir=auto name="interests" rows="6" class="form-control" [(ngModel)]="user.interests">
+                                </textarea>
+                                <h4>جزئیات محل زندگی:</h4>
+                                <div dir=auto class="form-inline">
+                                    <label for="city"></label>
+                                    <input name="city" class="form-control" [(ngModel)]="user.city" type="text">
+                                    <label for="country"></label>
+                                    <input name="country" class="form-control" [(ngModel)]="user.country" type="text">
+                                </div>
+                            </form>
+                        </tab>
+                          <tab dir="rtl" heading="آلبوم">
+                            
+                          </tab>
+                    
+                  
+                  </tabset>
+              </div>
+
+        </div>
+    </div>   
+</div>
