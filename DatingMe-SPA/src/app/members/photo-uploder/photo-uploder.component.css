@@ -1,0 +1,15 @@
+.nv-file-over {
+    border: dotted 3px red;
+}
+/* .mtlong{
+    margin-top: 300px;
+} */
+.fa-trash-o{
+    background-color: tomato;
+}
+input[type=file]{
+    color: transparent;    
+}
+div {
+direction: rtl;
+}

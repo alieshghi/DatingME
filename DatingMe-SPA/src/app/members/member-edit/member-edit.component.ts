@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, HostListener } from '@angular/core';
+import { Component, OnInit, ViewChild, HostListener, Input } from '@angular/core';
 import { IUser } from 'src/app/_models/user';
 import { Router, ActivatedRoute } from '@angular/router';
 import { NgForm } from '@angular/forms';
@@ -13,8 +13,8 @@ import { AuthService } from 'src/app/_services/auth.service';
 })
 export class MemberEditComponent implements OnInit {
   user: IUser;
+  photoUrl: string;
     @ViewChild('memberEditForm', {static: true}) memberEditForm: NgForm;
-
   constructor(
     private router: ActivatedRoute, private alertify: AlertifyService, private userService: UserService, private authService: AuthService
     ) { }
@@ -23,6 +23,9 @@ export class MemberEditComponent implements OnInit {
     const singleuser = 'user';
     this.router.data.subscribe(data => {
       this.user = data[singleuser];
+    });
+    this.authService.currentPhotoUrl.subscribe(photoUrl => {
+      this.photoUrl = photoUrl;
     });
   }
   save(){
@@ -33,7 +36,9 @@ export class MemberEditComponent implements OnInit {
     }, error => {
       this.alertify.error(error);
     });
-
   }
-
+  getMain(setMainUrl: string){
+    console.log(setMainUrl);
+    this.user.photoUrl = setMainUrl;
+  }
 }

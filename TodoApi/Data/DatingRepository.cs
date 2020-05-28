@@ -1,8 +1,10 @@
+using System.Runtime.CompilerServices;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using TodoApi.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
 
 namespace TodoApi.Data
 {
@@ -21,6 +23,17 @@ namespace TodoApi.Data
         public void Delete<T>(T entity) where T : class
         {
             _context.Remove(entity);
+        }
+
+        public Task<Photo> GetCurrentMainPhoto(int userId)
+        {
+            return _context.photos.Where(x=>x.UserId==userId).FirstOrDefaultAsync(x=>x.IsMain);
+        }
+
+        public async Task<Photo> GetPhoto(int id)
+        {
+            var photo = await _context.photos.FirstOrDefaultAsync(x=>x.Id==id);
+            return photo;
         }
 
         public async Task<User> GetUser(int id)

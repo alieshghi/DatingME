@@ -33,6 +33,7 @@ namespace TodoApi
                opt.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
             services.AddControllers();
             services.AddCors();
+            services.Configure<CloudinarySetting>(Configuration.GetSection("CloudinarySetting"));
             services.AddAutoMapper(typeof(DatingRepository).Assembly);
             services.AddScoped<IAuthRepository,AuthRepository>();
             services.AddScoped<IDatingRepository,DatingRepository>();
@@ -80,7 +81,7 @@ namespace TodoApi
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllers();
+                endpoints.MapDefaultControllerRoute(); // MapControllers();
             });
         }
     }

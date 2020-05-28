@@ -42,26 +42,32 @@ namespace TodoApi.Controllers
             {
                 return BadRequest("تعداد کاراکترهای پسورد باید بزرگتر از 4 باشد");
             }
+            if (userDto.Password.Length>8)
+            {
+                return BadRequest("تعداد کاراکترهای پسورد باید کوچکتر از 8 باشد");
+            }
             if ( await _repo.UserExists(userDto.UserName))
             {
                 return BadRequest("این حساب کاربری قبلاً ثبت شده است");
             }
-            var newUser = new User{
-                UserName=userDto.UserName
-            };
-            var createdUser= await _repo.Register(newUser,userDto.Password);
-            return StatusCode(201);
+            var userToCreate =_mapper.Map<User>(userDto);
+            var createdUser= await _repo.Register(userToCreate,userDto.Password);
+            var userToReturn= _mapper.Map<UserForDetails>(createdUser);
+           
+            var result= CreatedAtAction("GetUser",new {controller = "Users" ,id = createdUser.Id},userToReturn);
+            
+            return result;
         }
         [HttpPost("login")]
         public async Task<IActionResult> Login(UserForLoginDto userDto){
-            var user = await _repo.Login(userDto.UserName.ToLower(),userDto.Password);
-             if (user==null)
+            var userFromSever = await _repo.Login(userDto.UserName.ToLower(),userDto.Password);
+             if (userFromSever==null)
              {
                   return Unauthorized("کاربری یا کلمه عبور صحیح نیست");
              }
              var claims =new []{
-                 new Claim(ClaimTypes.NameIdentifier,user.Id.ToString()),
-                 new Claim(ClaimTypes.Name,user.UserName)
+                 new Claim(ClaimTypes.NameIdentifier,userFromSever.Id.ToString()),
+                 new Claim(ClaimTypes.Name,userFromSever.UserName)
              };
 
              var key=new SymmetricSecurityKey(Encoding.UTF8
@@ -74,10 +80,11 @@ namespace TodoApi.Controllers
              };
 
              var tokenHandler= new JwtSecurityTokenHandler();
-             var token =tokenHandler.CreateToken(tokenDescriptor);
-
+             var token = tokenHandler.CreateToken(tokenDescriptor);
+             var user = _mapper.Map<UserForListDto>(userFromSever);
              return Ok(new{
-               token = tokenHandler.WriteToken(token)   
+               token = tokenHandler.WriteToken(token),
+               user  
              });
         }
     }

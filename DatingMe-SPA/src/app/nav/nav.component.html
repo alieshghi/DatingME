@@ -18,6 +18,9 @@
         
       </ul>
       <div dropdown *ngIf="logedIn()" class="dropdown show" >
+        <span>
+          <img src="{{photoUrl||'../../../../assets/user.png'}}" alt="" >
+        </span>
         <a  class="dropdown-toggle text-light" dropdownToggle>
          خوش اومدی {{authServic.decodedToken?.unique_name}}
         </a>

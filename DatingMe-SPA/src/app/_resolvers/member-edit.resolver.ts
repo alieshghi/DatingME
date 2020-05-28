@@ -16,7 +16,6 @@ export class MemberEditResolver implements Resolve<IUser> {
 
         return this.userService.getUserById(this.authService.decodedToken.nameid).pipe(
             catchError(error => {
-                debugger;
                 this.alertify.error('مشکل دربازیابی اطلاعات');
                 this.router.navigate(['/members']);
                 return of(null);

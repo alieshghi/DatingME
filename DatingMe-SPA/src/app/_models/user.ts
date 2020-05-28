@@ -1,4 +1,4 @@
-import { IPhotos } from './photo';
+import { IPhoto } from './photo';
 
 export interface IUser {
     id: number;
@@ -14,5 +14,5 @@ export interface IUser {
     interests?: string;
     introduction?: string;
     lookingFor?: string;
-    photos?: IPhotos[];
+    photos?: IPhoto[];
 }

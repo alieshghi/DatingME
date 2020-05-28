@@ -35,6 +35,7 @@ export class MemberDetailsComponent implements OnInit {
   }
   getImages(){
     const imageUrls = [];
+    console.log(this.user.photos);
     for (const photo of this.user.photos) {
       imageUrls.push({
         small: photo.url,
@@ -42,8 +43,8 @@ export class MemberDetailsComponent implements OnInit {
         big: photo.url,
         description: photo.description
       });
-      return imageUrls;
     }
+    return imageUrls;
   }
 
   // getUser(){
