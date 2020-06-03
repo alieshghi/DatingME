@@ -75,7 +75,7 @@ namespace TodoApi.Controllers
              var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
              var tokenDescriptor= new SecurityTokenDescriptor {
                  Subject = new ClaimsIdentity(claims),
-                 Expires = DateTime.Now.AddMinutes(20),
+                 Expires = DateTime.Now.AddDays(1),
                  SigningCredentials=creds
              };
 

@@ -15,11 +15,13 @@ using System.IdentityModel.Tokens.Jwt;
 using Microsoft.AspNetCore.Authorization;
 using AutoMapper;
 using System.Collections.Generic;
+using TodoApi.helper;
 
 namespace TodoApi.Controllers
 {
     [Authorize]
     [ApiController]
+    [ServiceFilter(typeof(LogUserActivity))]
     [Route("[controller]")]       
     public class UsersController : ControllerBase
     {
@@ -39,9 +41,11 @@ namespace TodoApi.Controllers
             _mapper=mapper;
         }
         [HttpGet]
-        public async Task<IActionResult> GetUsers(){
-           var users= await _repo.GetUsers();
+        public async Task<IActionResult> GetUsers([FromQuery] UserParams userParam){
+            userParam.currentUserId=int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value);
+           var users= await _repo.GetUsers(userParam);           
            var userToReturn= _mapper.Map<IEnumerable<UserForListDto>>(users);
+           Response.AddPagination(users.PageSize,users.TotalPage,users.CurentPage,users.totalCountOfItems);
             return Ok(userToReturn);
         }
         [HttpGet("{id}")]

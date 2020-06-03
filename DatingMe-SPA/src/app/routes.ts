@@ -13,7 +13,9 @@ import { PreventUnsavedChanges } from './_guards/prevent-unsaved.guard';
 
 export const appRoutes: Routes = [
 
-    { path: 'home' , component: HomeComponent},
+    { path: '' , component: HomeComponent},
+
+    // { path: 'home' , component: HomeComponent},
     {
         path: '' ,
         runGuardsAndResolvers: 'always',
@@ -37,6 +39,6 @@ export const appRoutes: Routes = [
             }
         ]
     },
-    { path: '**', redirectTo: 'home', pathMatch: 'full' }
+    { path: '**', redirectTo: '', pathMatch: 'full' }
 ];
 

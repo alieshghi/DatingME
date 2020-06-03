@@ -1,3 +1,5 @@
+using System.Linq.Expressions;
+using System.Security.Cryptography.X509Certificates;
 using System.Runtime.CompilerServices;
 using System;
 using System.Collections.Generic;
@@ -5,6 +7,7 @@ using System.Threading.Tasks;
 using TodoApi.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
+using TodoApi.helper;
 
 namespace TodoApi.Data
 {
@@ -42,9 +45,72 @@ namespace TodoApi.Data
              return user;
         }
 
-        public async Task<IEnumerable<User>> GetUsers()
+        public async Task<PagedList<User>> GetUsers(UserParams userParams)
         {
-            return await _context.Users.Include(x=>x.Photos).ToListAsync();
+            var users= _context.Users.Include(x=>x.Photos).OrderByDescending(x =>x.LastActive).AsQueryable();
+            if (userParams.SortType == (int) SortOrderType.Assending )
+            {
+                users=users.OrderBy(x => x.LastActive);
+            }
+            users= users.Where(x => x.Id!=userParams.currentUserId);
+            if (!string.IsNullOrEmpty(userParams.Country) )
+            {
+                users = users.Where(x=>x.Country.Contains(userParams.Country));
+            }
+            if (!string.IsNullOrEmpty(userParams.City) )
+            {
+                users = users.Where(x=>x.City.Contains(userParams.City));
+            }
+            if (!string.IsNullOrEmpty(userParams.Gender))
+            {
+                users = users.Where(x => x.Gender== userParams.Gender);
+            }
+            if (userParams.MinAge != 18 || userParams.MaxAge != 99)
+                {
+                var minDob = DateTime.Today.AddYears(-userParams.MaxAge - 1);
+                var maxDob = DateTime.Today.AddYears(-userParams.MinAge);
+
+                users = users.Where(u => u.DateOfBirth >= minDob && u.DateOfBirth <= maxDob);
+            }
+            if (!string.IsNullOrEmpty(userParams.SortOrder))
+            {
+                if (userParams.SortType != (int) SortOrderType.Assending)
+                {
+                    switch (userParams.SortOrder)
+                {
+                    case "createdDate":
+                    users= users.OrderByDescending(x => x.Created);
+                    break;
+                    case "age":
+                    users= users.OrderBy(x => x.DateOfBirth);
+                    break;
+                    default:                    
+                    users= users.OrderByDescending(x => x.LastActive);
+                    break;
+                }
+                    
+                }
+                else
+                {
+                    switch (userParams.SortOrder )
+                {
+                    case "createdDate":
+                    users= users.OrderBy(x => x.Created);
+                    break;
+                    case "age":
+                    users= users.OrderByDescending(x => x.DateOfBirth);
+                    break;
+                    default:                    
+                    users= users.OrderBy(x => x.LastActive);
+                    break;
+                }
+                    
+                }
+                
+            }            
+                        
+            var result= await PagedList<User>.CreatePagintion(users ,userParams.PageSize,userParams.CurentPage);
+            return  result;
         }
 
         public async Task<bool> SaveAll()

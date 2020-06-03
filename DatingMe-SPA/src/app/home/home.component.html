@@ -1,17 +1,38 @@
-<div class="container mt-5" *ngIf="!logedInMode">
+<div class="container mt-5 backStyle" *ngIf="!logedInMode">
     <div style="text-align: center; " dir="rtl">
         
 
         <h1>
             بیا تو رفیق
         </h1>
-        <p>
+        <p class="mb-3">
             تنها کاری که باید بکنی ثبت نامه
         </p>
-        <div *ngIf="!registerMode" class="container">
+        <div>
+            <div class="container">
+                <carousel style="display: inline-block; width: 50%;">
+                    <slide  >
+                      <img src="../../assets//images/love1.jpg" alt="first slide" style="display: inline-block; width: 100%;">
+                    </slide>
+                    <slide >
+                      <img src="../../assets//images/love2.jpg" alt="second slide" style="display: inline-block; width: 80%;">
+                    </slide>
+                    <slide>
+                      <img src="../../assets//images/love3.jpg" alt="third slide" style="display: inline-block; width: 80%;">
+                    </slide>
+                    <slide >
+                        <img src="../../assets//images/love4.jpg" alt="fourth slide" style="display: inline-block; width: 80%;">
+                      </slide>
+                  </carousel>
+            </div>
+            
+        </div>
+        
+        <div *ngIf="!registerMode" class="container pt-2">
             <button class="btn btn-primary btn-lg ml-2" (click)="registerToggle()"> ثبت نام</button>
             <button class="btn btn-info btn-lg"> توضیحات بیشتر</button>
         </div>
+        
     </div>
     <div *ngIf="registerMode" class="container">
         <div class="row justify-content-center">

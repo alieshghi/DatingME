@@ -1,4 +1,68 @@
-<div class="container mt-5">
+<form #form="ngForm"   novalidate (ngSubmit)="loadUsers()" >
+<div  class="container mt-5">
+    
+        
+      
+      <div dir="rtl" class="row mb-2">
+        
+          <div class="form-inline col-md-9">
+          <div class="form-group">
+            <label for="minAge">از سن</label>
+            <input type="number" class="form-control" [(ngModel)]="userParams.minAge" style="width: 70px" id="minAge" name="minAge">
+          </div>
+    
+          <div class="form-group">
+            <label for="maxAge">تا سن</label>
+            <input type="number" class="form-control" [(ngModel)]="userParams.maxAge" style="width: 70px" id="maxAge" name="maxAge">
+          </div>
+    
+          <div class="form-group">
+            <label for="gender">جنسیت </label>
+            <select class="form-control"  [(ngModel)]="userParams.gender" style="width: 130px" id="gender" name="gender">
+              <option *ngFor="let gender of genderList" [value]="gender.value">
+                {{gender.display}}
+              </option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="cuntry">کشور</label>
+            <input type="text" class="form-control" [(ngModel)]="userParams.cuntry" style="width: 150px" id="cuntry" name="cuntry">
+          </div>          
+          <div class="form-group">
+            <label for="city">شهر</label>
+            <input type="text" class="form-control" [(ngModel)]="userParams.city" style="width: 150px"   id="city" name="city">
+          </div>          
+        </div>
+        <div class="text-center col-md-3">
+          <h4>تعداد افراد حاضر - {{pagedList.totalCountOfItems}} نفر</h4>
+        </div>
+      </div>
+      
+      <div dir="rtl" class="row mb-5">
+        <div class="form-inline col-md-9">
+          <div class="form-group">
+            <label for="sortOrder">نحوه مرتب سازی </label>            
+            <select class="form-control"  [(ngModel)]="userParams.sortOrder" style="width: 200px" id="sortOrder" name="sortOrder">
+              <option *ngFor="let sortOrder of sortOrderList" [value]="sortOrder.value">
+                {{sortOrder.display}}
+              </option>
+            </select>
+          </div>
+             <label class="radio-inline">
+              <input class="ml-3" type="radio" value="0" [(ngModel)]="userParams.sortType" name="sortType">نزولی
+            </label>
+           <label class="radio-inline mr-3">
+              <input class="ml-3" type="radio" value="1" [(ngModel)]="userParams.sortType" name="sortType">صعودی
+            </label> 
+          </div>
+         <div class="col-md-3">  
+          <button type="submit" class="btn btn-primary fa fa-search"  style="margin-right:10px"> جست و جوی</button>
+          <button type="button" class="btn btn-info fa fa-refresh" (click)="reset()" style="margin-left:10px"> تنظیم مجدد</button>
+        </div>
+        </div>
+        
+      
+     
     <div class="row">
         
             <div *ngFor="let user of users" class="col-lg-2 col-md-3 col-sm-6" >
@@ -7,4 +71,12 @@
         
 
     </div>
+    <div class="d-flex justify-content-center">
+        <pagination [boundaryLinks]="true" [totalItems]="pagedList.totalCountOfItems"
+            [itemsPerPage]="pagedList.pageSize" (pageChanged)="pageChanged($event)"
+            [(ngModel)]="pagedList.curentPage"
+            previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;">
+        </pagination>
+    </div>
 </div>
+</form>

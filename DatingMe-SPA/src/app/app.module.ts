@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { NgModule, PipeTransform } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { AppComponent } from './app.component';
@@ -9,6 +9,7 @@ import { HomeComponent } from './home/home.component';
 import { RegisterComponent } from './register/register.component';
 import { AlertifyService } from './_services/alertify.service';
 import {DatepickerModule, BsDatepickerModule} from 'ngx-bootstrap/datepicker';
+import {PaginationModule} from 'ngx-bootstrap/pagination';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MemberListComponent } from './members/member-list/member-list.component';
@@ -28,10 +29,20 @@ import { MemberEditResolver } from './_resolvers/member-edit.resolver';
 import { PreventUnsavedChanges } from './_guards/prevent-unsaved.guard';
 import { PhotoUploderComponent } from './members/photo-uploder/photo-uploder.component';
 import { FileUploadModule } from 'ng2-file-upload';
+import {TimeAgoPipe} from 'time-ago-pipe';
+import { CarouselModule } from 'ngx-bootstrap/carousel';
+// import { Pipe } from '@angular/core';
+
+// // tslint:disable-next-line: use-pipe-transform-interface
+// @Pipe({
+//   name: 'timeAgoo',
+//   pure: false
+// })
+export class TimeAgoExtendsPipe extends TimeAgoPipe  {}
+
 export function tokenGetter(){
   return localStorage.getItem('token');
 }
-
 @NgModule({
   declarations: [
     AppComponent,
@@ -44,8 +55,10 @@ export function tokenGetter(){
     MemberCardComponent,
     MemberDetailsComponent,
     MemberEditComponent,
-    PhotoUploderComponent
-  ],
+    PhotoUploderComponent,
+    TimeAgoPipe,
+    // TimeAgoExtendsPipe
+      ],
   imports: [
     BrowserModule,
     HttpClientModule,
@@ -56,6 +69,8 @@ export function tokenGetter(){
     FileUploadModule,
     BsDropdownModule.forRoot(),
     BsDatepickerModule.forRoot(),
+    PaginationModule.forRoot(),
+    CarouselModule.forRoot(),
     RouterModule.forRoot(appRoutes),
     TabsModule.forRoot(),
     JwtModule.forRoot({
