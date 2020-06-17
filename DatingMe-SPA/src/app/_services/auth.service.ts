@@ -12,6 +12,7 @@ export class AuthService {
   baseUrl = environment.apiurl + 'auth/';
   user: IUser;
   photoUrl = new BehaviorSubject<string>('../../assets/user.png');
+
   currentPhotoUrl = this.photoUrl.asObservable();
   jwtService = new JwtHelperService();
   decodedToken: any ;
@@ -32,9 +33,7 @@ export class AuthService {
     }));
 }
 register(user: IUser){
-  debugger;
-  return this.http.post(this.baseUrl + 'register', user);
-  debugger;
+    return this.http.post(this.baseUrl + 'register', user);
 }
 logedIn(){
   const token = localStorage.getItem('token');

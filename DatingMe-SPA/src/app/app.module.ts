@@ -9,6 +9,7 @@ import { HomeComponent } from './home/home.component';
 import { RegisterComponent } from './register/register.component';
 import { AlertifyService } from './_services/alertify.service';
 import {DatepickerModule, BsDatepickerModule} from 'ngx-bootstrap/datepicker';
+import {ButtonsModule} from 'ngx-bootstrap/buttons';
 import {PaginationModule} from 'ngx-bootstrap/pagination';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -31,6 +32,7 @@ import { PhotoUploderComponent } from './members/photo-uploder/photo-uploder.com
 import { FileUploadModule } from 'ng2-file-upload';
 import {TimeAgoPipe} from 'time-ago-pipe';
 import { CarouselModule } from 'ngx-bootstrap/carousel';
+import { ListResolver } from './_resolvers/list.resolver';
 // import { Pipe } from '@angular/core';
 
 // // tslint:disable-next-line: use-pipe-transform-interface
@@ -67,6 +69,7 @@ export function tokenGetter(){
     BrowserAnimationsModule,
     NgxGalleryModule,
     FileUploadModule,
+    ButtonsModule,
     BsDropdownModule.forRoot(),
     BsDatepickerModule.forRoot(),
     PaginationModule.forRoot(),
@@ -87,7 +90,8 @@ export function tokenGetter(){
     MemberDetailResolver,
     MemberListResolver,
     MemberEditResolver,
-    PreventUnsavedChanges
+    ListResolver,
+    PreventUnsavedChanges,
   ],
   bootstrap: [AppComponent]
 })

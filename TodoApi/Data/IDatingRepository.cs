@@ -14,6 +14,7 @@ namespace TodoApi.Data
          Task<User> GetUser(int id);
          Task<Photo> GetPhoto(int id);
          Task<Photo> GetCurrentMainPhoto(int userId);
-
+         Task<Like> GetLike(int userId, int resciveId);
+        
     }
 }

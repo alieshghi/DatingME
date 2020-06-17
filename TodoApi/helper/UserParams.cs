@@ -18,6 +18,8 @@ namespace TodoApi.helper
         }
         public string SortOrder { get; set; }
         public byte SortType { get; set; }=0;
+        public bool Likers { get; set; }=false;
+        public bool Likeds { get; set; }=false;
         
     }
 }

@@ -68,5 +68,27 @@ namespace TodoApi.Controllers
             }
             throw new Exception ($"در ذخیره سازی تغییرات کاربری {id} به مشکل خوردیم");
         }
+        [HttpPost("{id}/likes/{recievedId}")]
+        public async Task<IActionResult> CreateLike(int id, int recievedId){
+            if (id!= int.Parse(User.FindFirst(ClaimTypes.NameIdentifier).Value))
+            {
+                return Unauthorized("هر کاربر فقط اطلاعات مربوط به خود را باید ویرایش کند");
+            }
+            var likedUser = await _repo.GetLike(id,recievedId);
+            if (likedUser != null)
+            {
+                return BadRequest("قبلاً این کاربر را پسندیدی!!");
+            }
+            var like =new Like(){
+                LikerId=id,
+                LikedId=recievedId
+            };
+            _repo.Add<Like>(like);
+            if (await _repo.SaveAll())
+            {
+                return Ok();
+            }
+            return BadRequest("در لایک کردن کاربر انتخابی خطا به وجودآمد");
+        }
     }
 }

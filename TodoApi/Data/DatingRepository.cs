@@ -28,9 +28,15 @@ namespace TodoApi.Data
             _context.Remove(entity);
         }
 
-        public Task<Photo> GetCurrentMainPhoto(int userId)
+        public async Task<Photo> GetCurrentMainPhoto(int userId)
         {
-            return _context.photos.Where(x=>x.UserId==userId).FirstOrDefaultAsync(x=>x.IsMain);
+            return await _context.photos.Where(x=>x.UserId==userId).FirstOrDefaultAsync(x=>x.IsMain);
+        }
+
+        public async Task<Like> GetLike(int userId, int resciveId)
+        {
+            return await _context.Likes.FirstOrDefaultAsync(x => x.LikerId== userId &&
+             x.LikedId == resciveId);
         }
 
         public async Task<Photo> GetPhoto(int id)
@@ -57,7 +63,17 @@ namespace TodoApi.Data
             {
                 users = users.Where(x=>x.Country.Contains(userParams.Country));
             }
-            if (!string.IsNullOrEmpty(userParams.City) )
+            if (userParams.Likers)
+            {
+                var userLikeIdies = await GetLikesID(userParams.currentUserId,userParams.Likers);
+                users= users.Where(x => userLikeIdies.Contains(x.Id));
+            }
+            if (userParams.Likeds)
+            {
+                var userLikedByIdies = await GetLikesID(userParams.currentUserId,userParams.Likers);
+                users= users.Where(x => userLikedByIdies.Contains(x.Id));
+            }
+            if (!string.IsNullOrEmpty(userParams.City))
             {
                 users = users.Where(x=>x.City.Contains(userParams.City));
             }
@@ -111,6 +127,18 @@ namespace TodoApi.Data
                         
             var result= await PagedList<User>.CreatePagintion(users ,userParams.PageSize,userParams.CurentPage);
             return  result;
+        }
+        private async Task <IEnumerable<int>> GetLikesID(int userId, bool isLiker){
+            var user = await _context.Users.Include(x => x.Likeds)
+                     .Include(x =>x.Likers).FirstOrDefaultAsync(x => x.Id==userId);
+            if (isLiker)
+            {
+                return user.Likers.Where(x =>x.LikedId == userId).Select(x =>x.LikerId);
+            }
+            else
+            {
+                return user.Likeds.Where(x =>x.LikerId == userId).Select(x =>x.LikedId);
+            }
         }
 
         public async Task<bool> SaveAll()

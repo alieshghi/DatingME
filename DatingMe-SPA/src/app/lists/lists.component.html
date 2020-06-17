@@ -1,1 +1,32 @@
-<p>lists works!</p>
+<div class="text-center mt-3">
+    <h2 dir="rtl">{{likeFilter === 'Likers' ? 'علاقمدان به پروفایل من ' : 'پروفایل های مورد علاقه من'}} : {{pagedList.totalCountOfItems}}</h2>
+  </div>
+
+<div class="container mt-3">
+
+  <div class="row">
+    <div class="btn-group">
+      <button class="btn btn-primary" [(ngModel)]="likeFilter" btnRadio="Likers" (click)="getUserLikedOrLiker()">کسانی که پروفایل شمارو پسندیده اند</button>
+      <button class="btn btn-primary" [(ngModel)]="likeFilter" btnRadio="Likeds" (click)="getUserLikedOrLiker()">کسانی که پروفایلشان را پسندیده ام</button>
+    </div>
+  </div>
+
+  <br>
+
+  <div class="row">
+    <div *ngFor="let user of users" class="col-sm-6 col-md-4 col-lg-4 col-xl-2">
+      <app-member-card [user]="user"></app-member-card>
+    </div>
+  </div>
+
+
+
+</div>
+
+<div class="d-flex justify-content-center">
+  <pagination [boundaryLinks]="true" [totalItems]="pagedList.totalCountOfItems" [itemsPerPage]="pagedList.totalPage" [(ngModel)]="pagedList.curentPage"
+    (pageChanged)="pageChanged($event)" name="pagination" previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;"
+    >
+
+  </pagination>
+</div>

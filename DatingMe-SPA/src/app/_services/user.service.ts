@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 import { IUser } from '../_models/user';
 import { PaginationResult } from '../_models/Pagination';
 import { map } from 'rxjs/Operators';
+import { error } from 'protractor';
 
 
 @Injectable({
@@ -12,15 +13,17 @@ import { map } from 'rxjs/Operators';
 })
 export class UserService {
   baseUrl = environment.apiurl;
+
   constructor(private http: HttpClient) {
    }
-   getUsers(currentPage?, pageSize?, userParams?): Observable<PaginationResult<IUser[]>> {
+   getUsers(currentPage?, pageSize?, userParams?, likeFilter? ): Observable<PaginationResult<IUser[]>> {
      const paginatedUser: PaginationResult<IUser[]> = new PaginationResult<IUser[]>();
      let params = new HttpParams();
      if (currentPage != null && pageSize != null) {
        params = params.append('curentPage', currentPage);
        params = params.append('pageSize', pageSize);
      }
+
      if (userParams != null ) {
       params = params.append('minAge', userParams.minAge);
       params = params.append('maxAge', userParams.maxAge);
@@ -30,6 +33,12 @@ export class UserService {
       params = params.append('sortOrder', userParams.sortOrder);
       params = params.append('sortType', userParams.sortType);
      }
+     if (likeFilter === 'Likers') {
+      params = params.append('likers', 'true');
+     }
+     if (likeFilter === 'Likeds') {
+      params = params.append('likeds', 'true');
+    }
      return this.http.get<IUser[]>(this.baseUrl + 'users', {observe: 'response', params})
     .pipe(
       map( response => {
@@ -52,5 +61,8 @@ export class UserService {
   }
   deletePhoto(userId: number, id: number){
     return this.http.delete(this.baseUrl + 'users/' + userId + '/photos/' + id);
+  }
+  createLike(userId: number, recievedId: number ){
+    return this.http.post(this.baseUrl + 'users/' + userId + '/likes/' + recievedId, {});
   }
 }
