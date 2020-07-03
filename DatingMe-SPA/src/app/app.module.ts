@@ -33,6 +33,8 @@ import { FileUploadModule } from 'ng2-file-upload';
 import {TimeAgoPipe} from 'time-ago-pipe';
 import { CarouselModule } from 'ngx-bootstrap/carousel';
 import { ListResolver } from './_resolvers/list.resolver';
+import { MessageResolver } from './_resolvers/message.resolver';
+import { MemberMessagesComponent } from './members/member-messages/member-messages.component';
 // import { Pipe } from '@angular/core';
 
 // // tslint:disable-next-line: use-pipe-transform-interface
@@ -59,6 +61,7 @@ export function tokenGetter(){
     MemberEditComponent,
     PhotoUploderComponent,
     TimeAgoPipe,
+    MemberMessagesComponent,
     // TimeAgoExtendsPipe
       ],
   imports: [
@@ -92,6 +95,7 @@ export function tokenGetter(){
     MemberEditResolver,
     ListResolver,
     PreventUnsavedChanges,
+    MessageResolver,
   ],
   bootstrap: [AppComponent]
 })

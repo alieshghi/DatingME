@@ -1,0 +1,9 @@
+.img-circle{
+    max-height: 3rem;
+}
+td{
+    vertical-align: middle;
+}
+tr:hover {
+    background-color:darkgray;
+  }

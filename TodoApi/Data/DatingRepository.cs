@@ -145,5 +145,48 @@ namespace TodoApi.Data
         {
             return await _context.SaveChangesAsync()>0 ;
         }
+
+        public async Task<Message> GetMessageById(int id)
+        {
+            return await _context.Messages.FirstOrDefaultAsync( x =>x.Id==id);
+        }
+
+        public async Task<PagedList<Message>> GetMessages(MessageParams messageParams)
+        {
+            var messages= _context.Messages.Include(x => x.Sender).ThenInclude(x => x.Photos)
+            .Include(x => x.Recipient).ThenInclude(x => x.Photos)
+            .AsQueryable();
+            switch (messageParams.MessageContainer)
+            {
+                case "Inbox":
+                messages= messages.Where(x =>x.RecipientId== messageParams.UserId &&
+                 x.RecipientDeleted==false);
+                break;
+                case "Outbox":
+                messages= messages.Where(x =>x.SenderId== messageParams.UserId &&
+                 x.SenderDeleted==false);
+                 break;
+                default:
+                 messages = messages.Where(u => u.RecipientId == messageParams.UserId 
+                        && u.RecipientDeleted == false && u.IsRead == false);
+                    break;
+            }
+            messages= messages.OrderByDescending(x => x.MessageSent);
+            return await PagedList<Message>.CreatePagintion(messages,messageParams.PageSize,messageParams.PageNumber);
+        }
+
+        public async Task<IEnumerable<Message>> GetMessageThread(int userId, int resciveId)
+        {
+            var message = await _context.Messages.Include(x => x.Sender).ThenInclude(x => x.Photos)
+            .Include(x => x.Recipient).ThenInclude(x => x.Photos).Where(
+                x => x.RecipientId == userId && x.RecipientDeleted==false &&
+                 x.SenderId == resciveId
+                || x.RecipientId==resciveId
+                && x.SenderId== userId
+                && x.SenderDeleted == false
+                ).OrderByDescending(x => x.MessageSent).ToListAsync();
+                return message;
+        }
+         
     }
 }

@@ -24,7 +24,7 @@
                 <div class="card-footer">
                     <div class="btn-group d-flex">
                         <button class="btn btn-primary w-100"> پسندیدن </button>
-                        <button class="btn btn-success w-100"> پیغام</button>
+                        <button class="btn btn-success w-100" (click)="selectTab(3)" > پیغام</button>
                     </div>
                 </div>
             </div>
@@ -33,7 +33,7 @@
             <div class="tab-panel">
                 <tabset class="member-tabset" #memberTabs>
                   <tab dir="rtl" heading="درباره {{user.knownAs}}">
-                    <h5>توضیحات من</h5>
+                    <h5 class="mt-2" >توضیحات من</h5>
                     <p>{{user.introduction}}</p>
                     <h5>دنبال کسیم که :</h5>
                     <p>{{user.lookingFor}}</p>
@@ -47,7 +47,7 @@
                     
                   </tab>
                   <tab dir="rtl" heading="پیغام ها">
-                    
+                   <app-member-messages [recipientId]="user.id" ></app-member-messages> 
                   </tab>
                 </tabset>
               </div>

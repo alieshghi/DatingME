@@ -12,6 +12,7 @@ namespace TodoApi.Models
         public DbSet<User> Users {get;set;}
         public DbSet<Photo> photos {get;set;}
         public DbSet<Like> Likes {get;set;}
+        public DbSet<Message> Messages {get;set;}
         protected  override void OnModelCreating(ModelBuilder modelBuilder){
         modelBuilder.Entity<Like>().HasKey(
             x => new {x.LikerId, x.LikedId });
@@ -27,7 +28,20 @@ namespace TodoApi.Models
         .WithMany(u => u.Likeds)
         .HasForeignKey(u => u.LikerId)
         .OnDelete( DeleteBehavior.Restrict);
+        
+        modelBuilder.Entity<Message>()
+        .HasOne(u => u.Recipient)
+        .WithMany(u => u.MessagesReceived)       
+        .OnDelete(DeleteBehavior.Restrict);
+
+        modelBuilder.Entity<Message>()
+        .HasOne(u => u.Sender)
+        .WithMany(u => u.MessagesSent)       
+        .OnDelete(DeleteBehavior.Restrict);
+
+        
         }
+        
     }
     
 }

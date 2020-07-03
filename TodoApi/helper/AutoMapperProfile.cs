@@ -27,7 +27,10 @@ namespace TodoApi.helper
             CreateMap<Photo,PhotoToReturnDto>();
             CreateMap<PhotosToCreatDto,Photo>();
             CreateMap<UserForUpdateDto,User>();
-            CreateMap<UserForRegisterDto,User>();            
+            CreateMap<UserForRegisterDto,User>();
+            CreateMap<Message,MessageToReturnDto>().ForMember(x => x.SenderPhotoUrl, opt => opt.MapFrom(u => u.Sender.Photos.FirstOrDefault(p => p.IsMain).Url))
+                                                   .ForMember(x => x.RecipientPhotoUrl, opt => opt.MapFrom(u => u.Recipient.Photos.FirstOrDefault(p => p.IsMain).Url));
+            CreateMap<Message,MessageToCreateDto>().ReverseMap();
             
         }
     }
